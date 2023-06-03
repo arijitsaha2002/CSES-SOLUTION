@@ -42,9 +42,9 @@ ll solve(Point *P, int i, int j) {
     // cout << sol << endl;
 
     Point T = {P[mid_index].first - sol, 0};
-    int new_i = upper_bound(P + i, P + j + 1, T, sort_x) - (P + i);
+    int new_i = upper_bound(P + i, P + j + 1, T, sort_x) - P;
     T = {P[mid_index].first + sol, 0};
-    int new_j = lower_bound(P + i, P + j + 1, T, sort_x) - 1 - (P + i);
+    int new_j = lower_bound(P + i, P + j + 1, T, sort_x) - P;
 
 
     if (new_i <= mid_index and mid_index < new_j) {

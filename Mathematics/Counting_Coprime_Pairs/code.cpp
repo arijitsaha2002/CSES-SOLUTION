@@ -11,15 +11,15 @@ using namespace std;
 // tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>
 
 const int MaxN = 1e6 + 1;
-ll divisor[MaxN];
-ll counter[MaxN];
+vector<vector<ll>> divisors(MaxN, vector<ll>());
+ll Counter[MaxN];
+bool paired[MaxN];
 
 void fill() {
-    divisor[1] = 1;
     for (int i = 2; i < MaxN; i++) {
-        if (!divisor[i]) {
+        if (divisors[i].size() == 0) {
             for (int j = i; j < MaxN; j += i) {
-                divisor[j] = i;
+                divisors[j].push_back(i);
             }
         }
     }
@@ -31,32 +31,40 @@ int main() {
 
     fill();
 
-    ll n, l;
+    ll n;
     cin >> n;
+    ll arr[n];
+    INPUT(n, arr);
 
-    ll t;
-    FOR(i, n) {
-        cin >> t;
-        int p = t;
-        while (t > 1) {
-            l = divisor[t];
-            counter[t]++;
-            while (t > 1 and l == divisor[t]) {
-                t /= l;
-                counter[t]++;
+    ll r = n * (n - 1) / 2;
+
+    for (int i = 0; i < n; i++) {
+        for (ll j = (1 << divisors[arr[i]].size()) - 1; j > 0 ; j--) {
+            ll m = 1;
+            int c = 0;
+            for (ll k = 0; k < divisors[arr[i]].size(); k++) {
+                if (j & (1 << k)) {
+                    m *= divisors[arr[i]][k];
+                    c++;
+                }
+            }
+            Counter[m]++;
+            if (c & 1) paired[m] = 1;
+            else paired[m] = 0;
+        }
+    }
+
+    for(int i = 2; i < MaxN; i++){
+        if(Counter[i] > 1){
+            if(paired[i]){
+                r -= (Counter[i] * (Counter[i] - 1)) >> 1;
+            }
+            else{
+                r += (Counter[i] * (Counter[i] - 1)) >> 1;
             }
         }
     }
 
-    ll r = 0;
-
-    for (int i = 2; i < MaxN; i++) {
-        if (counter[i] > 1) {
-            r += ((counter[i] - 1) * counter[i]) >> 1;
-        }
-    }
-
-    cout << (((n - 1) * n) >> 1) - r << newline;
-
+    cout << r << endl;
     return 0;
 }
