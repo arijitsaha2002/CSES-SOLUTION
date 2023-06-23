@@ -76,6 +76,7 @@ void update(int node, int x1, int y1, int x2, int y2, int p, int q) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
+    cout.tie(0);
 
     cin >> n >> m;
     char c;

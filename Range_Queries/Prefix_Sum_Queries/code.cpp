@@ -16,7 +16,7 @@ Point tree[MaxN];
 void build(ll node, ll *arr, int low, int high) {
     if (low == high) {
         tree[node].first = arr[low];
-        tree[node].second = max(0LL, arr[low]);
+        tree[node].second = arr[low];
     }
     else if (low < high) {
         ll mid = (low + high) >> 1;
@@ -28,44 +28,36 @@ void build(ll node, ll *arr, int low, int high) {
     }
 }
 
-ll queries(int node, int left, int right, int low, int high) {
+Point queries(int node, int left, int right, int low, int high) {
     if (left <= low and high <= right) {
-        return tree[node].second;
+        return tree[node];
     }
     else if (right < low or high < left) {
-        return 0;
+        return {0, 0};
     }
-    else if(low < high){
+    else if (low < high) {
         int mid = (low + high) >> 1;
         int child = node << 1;
-        ll ql = queries(child, left, right, low, mid);
-        ll qr = queries(child + 1, left, right, mid + 1, high);
-        return max( ql, qr + tree[child].first);
+        Point ql = queries(child, left, right, low, mid);
+        Point qr = queries(child + 1, left, right, mid + 1, high);
+        if (qr.second + ql.first >= ql.second) {
+            return {qr.first + ql.first, qr.second + ql.first};
+        }
+        else {
+            return {qr.first + ql.first, ql.second};
+        }
     }
-    return 0;
+    return {0, 0};
 }
 
-int prefixSum(int node, int low, int high, int index){
-    if(high <= index){
-        return tree[node].first;
-    }
-    else if(low <= index and index < high){
-        int mid = (low + high) >> 1;
-        int child = node << 1;
-        ll ql = prefixSum(child, low, mid, index);
-        ll qr = prefixSum(child + 1, mid + 1, high, index);
-        return ql + qr;
-    }
-    return 0;
-}
 
-void update(int node, int low, int high, int index, int value){
-    if(low == high){
-        if(low == index){
+void update(int node, int low, int high, int index, int value) {
+    if (low == high) {
+        if (low == index) {
             tree[node].first = tree[node].second = value;
         }
     }
-    else if( low < high and low <= index and index <= high){
+    else if (low <= index and index <= high) {
         int mid = (low + high) >> 1;
         int child = node << 1;
         update(child, low, mid, index, value);
@@ -85,7 +77,6 @@ int main() {
 
     ll arr[n];
     INPUT(n, arr);
-
     build(1, arr, 0, n - 1);
 
     int a, b, t;
@@ -96,15 +87,9 @@ int main() {
             update(1, 0, n - 1, a, b);
         }
         else {
-            ll g = 0;
-            for(int i = 0; i < a - 1; i ++){
-                g += arr[i];
-            }
-            ll r = queries(1, a - 1, b - 1, 0, n - 1) - g;
-            // ll r = queries(1, a - 1, b - 1, 0, n - 1) - prefixSum(1, 0, n - 1, a - 2);
-            cout << max(r, 0LL) << newline;
+            Point r = queries(1, a - 1, b - 1, 0, n - 1);
+            cout << max(r.second, 0LL) << newline;
         }
-    }
-
+    }  
     return 0;
 }
