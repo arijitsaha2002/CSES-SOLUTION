@@ -4,10 +4,6 @@
 using namespace std;
 using namespace __gnu_pbds;
 
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
-#pragma unroll 2
-
 #define ll long long
 #define M 1000000007
 #define newline '\n'
