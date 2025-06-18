@@ -1,10 +1,25 @@
-input/code.cpp: In function 'int main()':
-input/code.cpp:15:14: warning: comparison of integer expressions of different signedness: 'int' and 'std::__cxx11::basic_string<char>::size_type' {aka 'long unsigned int'} [-Wsign-compare]
-   15 |     while (i < s.size()) {
-      |            ~~^~~~~~~~~~
-input/code.cpp:22:35: warning: comparison of integer expressions of different signedness: 'int' and 'std::__cxx11::basic_string<char>::size_type' {aka 'long unsigned int'} [-Wsign-compare]
-   22 |     for(int j = pattern.size(); j < s.size(); j++) i += (pi_array[j] == pattern.size());
-      |                                 ~~^~~~~~~~~~
-input/code.cpp:22:70: warning: comparison of integer expressions of different signedness: 'int' and 'std::__cxx11::basic_string<char>::size_type' {aka 'long unsigned int'} [-Wsign-compare]
-   22 |     for(int j = pattern.size(); j < s.size(); j++) i += (pi_array[j] == pattern.size());
-      |                                                          ~~~~~~~~~~~~...
+#include <iostream>
+using namespace std;
+
+const int MaxN = 4e6;
+int pi_array[MaxN];
+
+int main() {
+
+    string str, pattern;
+    cin >> str;
+    cin >> pattern;
+    string s = pattern + "*" + str;
+
+    int i = 1, len = 0;
+    while (i < s.size()) {
+        if (s[i] == s[len]) pi_array[i++] = ++len;
+        else if (len == 0) pi_array[i++] = 0;
+        else len = pi_array[len - 1];
+    }
+
+    i = 0;
+    for(int j = pattern.size(); j < s.size(); j++) i += (pi_array[j] == pattern.size());
+    cout << i << endl;
+    return 0;
+}

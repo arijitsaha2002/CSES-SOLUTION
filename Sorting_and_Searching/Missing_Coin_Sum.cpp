@@ -1,4 +1,26 @@
-input/code.cpp: In function 'int main()':
-input/code.cpp:19:19: warning: comparison of integer expressions of different signedness: 'long int' and 'std::vector<long long int>::size_type' {aka 'long unsigned int'} [-Wsign-compare]
-   19 |     for (n = 0; n < A.size() and A[n] <= r ; n ++) {
-      |                 ~~^~~~~~~~~~
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+
+    long n;
+    cin >> n;
+    vector<long long> A(n);
+    for_each(A.begin(), A.end(), [](long long & s) {cin >> s;});
+    sort(A.begin(), A.end());
+
+    long long r = 1;
+    for (n = 0; n < A.size() and A[n] <= r ; n ++) {
+        r += A[n];
+    }
+
+    cout << r << endl;
+
+    return 0;
+}

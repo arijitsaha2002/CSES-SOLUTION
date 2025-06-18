@@ -1,7 +1,41 @@
-input/code.cpp: In function 'int main()':
-input/code.cpp:22:14: warning: comparison of integer expressions of different signedness: 'long int' and 'std::vector<long long int>::size_type' {aka 'long unsigned int'} [-Wsign-compare]
-   22 |     while (j < A.size()) {
-      |            ~~^~~~~~~~~~
-input/code.cpp:23:15: warning: comparison of integer expressions of different signedness: 'long int' and 'std::vector<long long int>::size_type' {aka 'long unsigned int'} [-Wsign-compare]
-   23 |         if (i == A.size() + 1 and sum <= m) {
-      |             ~~^~~~~~~~~~~~~~~
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+
+int main() {
+
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    long n;
+    long long m;
+    cin >> n >> m;
+    vector<long long> A(n);
+    for_each(A.begin(), A.end(), [](long long & s) { cin >> s; });
+
+
+    long i = 0, j = 0, counter = 0;
+    long long sum = 0;
+
+    while (j < A.size()) {
+        if (i == A.size() + 1 and sum <= m) {
+            break;
+        }
+
+        counter += (sum == m);
+
+        if (sum < m) {
+            sum += A[i];
+            i ++;
+        } else {
+            sum -= A[j];
+            j ++;
+        }
+        
+    }
+
+    cout << counter << endl;
+    return 0;
+}
