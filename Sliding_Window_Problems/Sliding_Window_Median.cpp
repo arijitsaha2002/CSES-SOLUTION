@@ -4,9 +4,7 @@
 using namespace std;
 
 #define blankchar ' '
-#define newline endl
-// #define newline '\n'
-#define dout //
+#define newline '\n'
 
 int main() {
     ios::sync_with_stdio(false);
@@ -40,30 +38,12 @@ int main() {
 
     for (int i = k; i < n; i++) {
 
-        // cout << "Size " << LS.size() << "  " << RS.size() << newline;
-
-        // for (auto c : LS) {
-        //     cout << c << blankchar;
-        // }
-
-        // cout << newline << "---" << newline;
-
-        // for (auto c : RS) {
-        //     cout << c << blankchar;
-        // }
-
-
-        // cout << newline << "#################   " << LS.size()  << newline;
-
-
         int in = arr[i], out = arr[i - k];
         int median = *LS.rbegin();
 
         cout << median << blankchar;
 
         if ( out == median) {
-            // dout << "mode  1" << endl;
-
             LS.erase(LS.find(out));
             if(RS.size() == 0 and in <= median){
                 LS.insert(in);
@@ -78,24 +58,20 @@ int main() {
             }
         }
         else if (out <= median and in <= median) {
-            // dout << "mode  2" << endl;
             LS.erase(LS.find(out));
             LS.insert(in);
         }
         else if (out >= median and in >= median) {
-            // dout << "mode  3" << endl;
             RS.erase(RS.find(out));
             RS.insert(in);
         }
         else if (out < median and in > median) {
-            // dout << "mode  4" << endl;
             LS.erase(LS.find(out));
             RS.insert(in);
             LS.insert(*RS.begin());
             RS.erase(RS.begin());
         }
         else if (out > median and in < median) {
-            // dout << "mode  5" << endl;
             RS.erase(RS.find(out));
             LS.insert(in);
             RS.insert(*LS.rbegin());
@@ -104,7 +80,6 @@ int main() {
             LS.erase(it);
         }
 
-        // dout << "in "<< in << "  out " << out << endl;
     }
 
     cout << *LS.rbegin() << blankchar << endl;
